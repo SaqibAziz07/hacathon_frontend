@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import { useRouter, usePathname } from "next/navigation";
 import api from "../lib/api";
 
@@ -18,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const checkUser = async () => {
-    const token = Cookies.get("token");
+    const token = localStorage.getItem("token");
     if (!token) {
       setLoading(false);
       // If we are on a protected route, redirect to login
@@ -47,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await api.post("/auth/login", { email, password });
       if (res.data.success) {
-        Cookies.set("token", res.data.token, { expires: 7 }); // 7 days
+        localStorage.setItem("token", res.data.token);
         setUser(res.data.user);
         redirectUser(res.data.user.role);
         return { success: true };
@@ -62,7 +61,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    Cookies.remove("token");
+    localStorage.removeItem("token");
     setUser(null);
     router.push("/login");
   };

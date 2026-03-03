@@ -228,10 +228,10 @@ export default function AISymptomChecker() {
                 <div className="flex flex-wrap items-center gap-3 sm:gap-4">
                   <span className="text-xs sm:text-sm font-medium text-gray-500">Risk Assessment:</span>
                   <span className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold capitalize
-                    ${result.data.riskLevel === 'high' ? 'bg-red-100 text-red-800' : 
-                      result.data.riskLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' : 
+                    ${(result.data.riskAssessment?.level || result.data.riskLevel) === 'high' ? 'bg-red-100 text-red-800' : 
+                      (result.data.riskAssessment?.level || result.data.riskLevel) === 'medium' ? 'bg-yellow-100 text-yellow-800' : 
                       'bg-green-100 text-green-800'}`}>
-                    {result.data.riskLevel || result.data.risk} Risk
+                    {(result.data.riskAssessment?.level || result.data.riskLevel || 'N/A')} Risk
                   </span>
                 </div>
 
@@ -245,7 +245,9 @@ export default function AISymptomChecker() {
                     {(result.data.possibleConditions || result.data.conditions || []).map((condition: any, i: number) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-xs sm:text-sm text-gray-900">{condition}</span>
+                        <span className="text-xs sm:text-sm text-gray-900">
+                          {typeof condition === 'object' ? `${condition.name} (${condition.match}%)` : condition}
+                        </span>
                       </div>
                     ))}
                   </div>

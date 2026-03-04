@@ -1,305 +1,194 @@
 "use client";
-import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, LogOut, User, LogIn, UserPlus, Home, LayoutDashboard, Info } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-interface User {
-  id: string;
-  username: string;
-  email: string;
-}
+const NAV_LINKS = [
+  { label: "About",    href: "#about" },
+  { label: "Features", href: "#features" },
+  { label: "Pricing",  href: "#pricing" },
+  { label: "Contact",  href: "#contact" },
+];
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [mounted, setMounted] = useState<boolean>(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  
+  const [scrolled,    setScrolled]    = useState(false);
+  const [mobileOpen,  setMobileOpen]  = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
-    
-    setIsLoggedIn(!!token);
-    
-    if (userData) {
-      try {
-        setUser(JSON.parse(userData) as User);
-      } catch (error) {
-        console.error("Failed to parse user data:", error);
-      }
-    }
+    const fn = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  const isActive = (path: string): boolean => {
-    if (!mounted) return false;
-    return pathname === path;
-  };
-
-  const handleLogout = (): void => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUser(null);
-    setMobileMenuOpen(false);
-    router.push("/");
-  };
-
-  const closeMobileMenu = (): void => {
-    setMobileMenuOpen(false);
-  };
-
-  if (!mounted) {
-    return null;
-  }
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 border-b border-gray-800">
-      {/* Animated gradient border effect */}
-      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
-          
-          {/* Logo - Left */}
-          <Link href="/" className="flex items-center space-x-2 group relative" onClick={closeMobileMenu}>
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-md group-hover:bg-blue-500/30 transition"></div>
-              <span className="relative text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                🤖 AI
-              </span>
-            </div>
-            <span className="text-gray-300 font-semibold text-sm md:text-base group-hover:text-white transition">
-              Assistant
-            </span>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');
+
+        .navbar {
+          position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+          padding: 0 40px;
+          transition: all 0.3s;
+          font-family: 'DM Sans', sans-serif;
+        }
+        .navbar.scrolled {
+          background: rgba(255,255,255,0.96);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          border-bottom: 1px solid #f1f5f9;
+          box-shadow: 0 1px 24px rgba(0,0,0,0.06);
+        }
+        .nav-inner {
+          max-width: 1200px; margin: 0 auto;
+          display: flex; align-items: center;
+          justify-content: space-between;
+          height: 70px;
+        }
+
+        /* LOGO */
+        .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-logo-icon {
+          width: 38px; height: 38px; background: #0f172a; border-radius: 10px;
+          display: flex; align-items: center; justify-content: center; font-size: 20px;
+          transition: transform 0.2s;
+        }
+        .nav-logo:hover .nav-logo-icon { transform: rotate(-6deg) scale(1.05); }
+        .nav-logo-text {
+          font-family: 'Sora', sans-serif; font-weight: 800; font-size: 21px; color: #0f172a;
+        }
+
+        /* DESKTOP LINKS */
+        .nav-links { display: flex; gap: 4px; list-style: none; }
+        .nav-links a {
+          color: #475569; text-decoration: none; font-size: 14px; font-weight: 500;
+          padding: 7px 14px; border-radius: 8px; transition: all 0.2s;
+        }
+        .nav-links a:hover { color: #0f172a; background: #f1f5f9; }
+
+        /* BUTTONS */
+        .nav-actions { display: flex; gap: 10px; align-items: center; }
+        .nav-btn-outline {
+          background: transparent; color: #0f172a; border: 1.5px solid #e2e8f0;
+          padding: 9px 20px; border-radius: 10px; font-size: 14px; font-weight: 600;
+          cursor: pointer; font-family: inherit; transition: all 0.2s; text-decoration: none;
+          display: inline-flex; align-items: center;
+        }
+        .nav-btn-outline:hover { border-color: #94a3b8; background: white; }
+        .nav-btn-dark {
+          background: #0f172a; color: white; border: none;
+          padding: 10px 22px; border-radius: 10px; font-size: 14px; font-weight: 600;
+          cursor: pointer; font-family: inherit; transition: all 0.2s; text-decoration: none;
+          display: inline-flex; align-items: center; gap: 6px;
+        }
+        .nav-btn-dark:hover { background: #1e293b; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(15,23,42,0.2); }
+
+        /* HAMBURGER */
+        .nav-hamburger {
+          display: none; flex-direction: column; gap: 5px;
+          background: none; border: none; cursor: pointer; padding: 6px;
+        }
+        .ham-line {
+          width: 24px; height: 2px; background: #0f172a; border-radius: 2px; transition: all 0.3s;
+        }
+        .nav-hamburger.open .ham-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .nav-hamburger.open .ham-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .nav-hamburger.open .ham-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* MOBILE MENU */
+        .mobile-menu {
+          display: none;
+          position: fixed; top: 70px; left: 0; right: 0; z-index: 99;
+          background: white; border-bottom: 1px solid #f1f5f9;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+          padding: 20px 24px 24px;
+          flex-direction: column; gap: 6px;
+          animation: slideDown 0.25s ease;
+        }
+        .mobile-menu.open { display: flex; }
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .mobile-menu a {
+          color: #334155; text-decoration: none; font-size: 15px; font-weight: 500;
+          padding: 11px 14px; border-radius: 10px; transition: background 0.2s; font-family: 'DM Sans', sans-serif;
+        }
+        .mobile-menu a:hover { background: #f8fafc; }
+        .mobile-divider { height: 1px; background: #f1f5f9; margin: 8px 0; }
+        .mobile-auth { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+        .mobile-btn-outline {
+          text-align: center; padding: 12px; border-radius: 10px; border: 1.5px solid #e2e8f0;
+          font-size: 14px; font-weight: 600; color: #0f172a; text-decoration: none;
+          font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+        }
+        .mobile-btn-outline:hover { background: #f8fafc; }
+        .mobile-btn-dark {
+          text-align: center; padding: 12px; border-radius: 10px; background: #0f172a;
+          font-size: 14px; font-weight: 600; color: white; text-decoration: none;
+          font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+        }
+        .mobile-btn-dark:hover { background: #1e293b; }
+
+        @media (max-width: 768px) {
+          .navbar { padding: 0 20px; }
+          .nav-links, .nav-actions { display: none; }
+          .nav-hamburger { display: flex; }
+        }
+      `}</style>
+
+      <nav className={`navbar${scrolled ? " scrolled" : ""}`}>
+        <div className="nav-inner">
+
+          {/* LOGO */}
+          <Link href="/" className="nav-logo">
+            <div className="nav-logo-icon">🏥</div>
+            <span className="nav-logo-text">AI Clinic</span>
           </Link>
 
-          {/* Desktop Navigation - Center */}
-          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
-            <Link 
-              href="/" 
-              className={`relative px-4 py-2 rounded-xl transition-all duration-300 ${
-                isActive('/') 
-                  ? 'text-white bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <Home className="h-4 w-4" />
-                <span>Home</span>
-              </span>
-              {isActive('/') && (
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></span>
-              )}
-            </Link>
-            
-            <Link 
-              href="/dashboard" 
-              className={`relative px-4 py-2 rounded-xl transition-all duration-300 ${
-                isActive('/dashboard') 
-                  ? 'text-white bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <LayoutDashboard className="h-4 w-4" />
-                <span>Dashboard</span>
-              </span>
-              {isActive('/dashboard') && (
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></span>
-              )}
-            </Link>
-            
-            <Link 
-              href="/about" 
-              className={`relative px-4 py-2 rounded-xl transition-all duration-300 ${
-                isActive('/about') 
-                  ? 'text-white bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <span className="flex items-center gap-2">
-                <Info className="h-4 w-4" />
-                <span>About</span>
-              </span>
-              {isActive('/about') && (
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-12 h-[2px] bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></span>
-              )}
-            </Link>
+          {/* DESKTOP LINKS */}
+          <ul className="nav-links">
+            {NAV_LINKS.map((l) => (
+              <li key={l.label}>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))}
+          </ul>
+
+          {/* DESKTOP BUTTONS */}
+          <div className="nav-actions">
+            <Link href="/login"  className="nav-btn-outline">Log In</Link>
+            <Link href="/signup" className="nav-btn-dark">Get Started →</Link>
           </div>
 
-          {/* Auth Buttons - Right */}
-          <div className="hidden md:flex items-center space-x-3">
-            {isLoggedIn ? (
-              <>
-                <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 border border-gray-700">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                    <span className="text-white text-sm font-bold">
-                      {user?.username?.charAt(0).toUpperCase() || 'U'}
-                    </span>
-                  </div>
-                  <span className="text-gray-300 text-sm">
-                    {user?.username || 'User'}
-                  </span>
-                </div>
-                
-                <button 
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/50 transition-all duration-300 group"
-                >
-                  <LogOut className="h-4 w-4 group-hover:rotate-12 transition" />
-                  <span>Logout</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <Link 
-                  href="/login" 
-                  className="px-4 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 transition-all duration-300 flex items-center gap-2"
-                >
-                  <LogIn className="h-4 w-4" />
-                  <span>Login</span>
-                </Link>
-                
-                <Link 
-                  href="/signup" 
-                  className="relative group px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2 shadow-lg shadow-blue-600/25"
-                >
-                  <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition"></span>
-                  <UserPlus className="h-4 w-4" />
-                  <span>Sign Up</span>
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-10 h-10 rounded-xl bg-white/5 border border-gray-700 text-gray-400 hover:text-white hover:bg-white/10 transition-all duration-300 flex items-center justify-center"
+          {/* HAMBURGER */}
+          <button
+            className={`nav-hamburger${mobileOpen ? " open" : ""}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
+            <span className="ham-line" />
+            <span className="ham-line" />
+            <span className="ham-line" />
           </button>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Menu */}
-      <div className={`md:hidden absolute left-0 right-0 bg-gradient-to-br from-gray-900 via-[#1a1a1a] to-gray-900 border-t border-gray-800 shadow-2xl transition-all duration-300 transform ${
-        mobileMenuOpen ? 'translate-y-0 opacity-100 visible' : '-translate-y-2 opacity-0 invisible pointer-events-none'
-      }`}>
-        <div className="p-4 space-y-3">
-          {/* User Info for Mobile */}
-          {isLoggedIn && user && (
-            <div className="p-4 rounded-xl bg-white/5 border border-gray-700 mb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                  <span className="text-white text-lg font-bold">
-                    {user.username?.charAt(0).toUpperCase()}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-white font-medium">{user.username}</p>
-                  <p className="text-gray-400 text-sm">{user.email}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Navigation Links */}
-          <Link 
-            href="/" 
-            onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-              isActive('/') 
-                ? 'bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 text-white' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <Home className="h-5 w-5" />
-            <span className="font-medium">Home</span>
-            {isActive('/') && (
-              <span className="ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></span>
-            )}
-          </Link>
-
-          <Link 
-            href="/dashboard" 
-            onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-              isActive('/dashboard') 
-                ? 'bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 text-white' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <LayoutDashboard className="h-5 w-5" />
-            <span className="font-medium">Dashboard</span>
-            {isActive('/dashboard') && (
-              <span className="ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></span>
-            )}
-          </Link>
-
-          <Link 
-            href="/about" 
-            onClick={closeMobileMenu}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-              isActive('/about') 
-                ? 'bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 text-white' 
-                : 'text-gray-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <Info className="h-5 w-5" />
-            <span className="font-medium">About</span>
-            {isActive('/about') && (
-              <span className="ml-auto w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"></span>
-            )}
-          </Link>
-
-          {/* Divider */}
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent my-4"></div>
-
-          {/* Auth Buttons for Mobile */}
-          {isLoggedIn ? (
-            <button 
-              onClick={() => {
-                handleLogout();
-                closeMobileMenu();
-              }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all duration-300"
-            >
-              <LogOut className="h-5 w-5" />
-              <span className="font-medium">Logout</span>
-            </button>
-          ) : (
-            <div className="grid grid-cols-2 gap-3">
-              <Link 
-                href="/login" 
-                onClick={closeMobileMenu}
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/5 border border-gray-700 text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
-              >
-                <LogIn className="h-5 w-5" />
-                <span>Login</span>
-              </Link>
-              
-              <Link 
-                href="/signup" 
-                onClick={closeMobileMenu}
-                className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
-              >
-                <UserPlus className="h-5 w-5" />
-                <span>Sign Up</span>
-              </Link>
-            </div>
-          )}
+      {/* MOBILE MENU */}
+      <div className={`mobile-menu${mobileOpen ? " open" : ""}`}>
+        {NAV_LINKS.map((l) => (
+          <a key={l.label} href={l.href} onClick={() => setMobileOpen(false)}>
+            {l.label}
+          </a>
+        ))}
+        <div className="mobile-divider" />
+        <div className="mobile-auth">
+          <Link href="/login"  className="mobile-btn-outline">Log In</Link>
+          <Link href="/signup" className="mobile-btn-dark">Get Started →</Link>
         </div>
       </div>
-    </nav>
+    </>
   );
 }

@@ -32,7 +32,10 @@ export default function AISymptomChecker() {
     setResult(null);
 
     try {
-      const res = await api.post("/ai/symptom-checker", formData);
+      const res = await api.post("/ai/symptom-checker", {
+  ...formData,
+  age: Number(formData.age),
+})
       if (res.data.success) {
         setResult(res.data);
       } else {

@@ -1,6 +1,3 @@
-// ═══════════════════════════════════════════
-// FILE 1: admin/appointments/page.tsx
-// ═══════════════════════════════════════════
 'use client'
 import { useState, useEffect } from 'react'
 import api from '@/lib/api'

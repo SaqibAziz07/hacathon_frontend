@@ -3,7 +3,24 @@ import { useEffect, useState } from 'react'
 import { prescriptionAPI } from '@/lib/api'
 import { format } from 'date-fns'
 import { FileText, Download, Eye, Pill, X, Search, MoreHorizontal } from 'lucide-react'
-import type { Prescription, Medicine } from '@/types'
+
+type Medicine = {
+  name: string
+  dosage: string
+  frequency: string
+  duration: string
+}
+
+type Prescription = {
+  _id: string
+  doctorId: string | { _id: string; name: string }
+  diagnosis: string
+  medicines: Medicine[]
+  instructions?: string
+  aiExplanation?: string
+  createdAt: string
+  [key: string]: any
+}
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import toast from 'react-hot-toast'

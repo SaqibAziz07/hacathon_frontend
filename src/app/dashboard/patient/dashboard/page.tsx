@@ -4,7 +4,26 @@ import { appointmentAPI, prescriptionAPI } from '@/lib/api'
 import { useAuth } from '@/context/AuthContext'
 import { format, isFuture } from 'date-fns'
 import { Calendar, FileText, CheckCircle, Clock, MoreHorizontal, Bell, Search } from 'lucide-react'
-import type { Appointment, Prescription } from '@/types'
+
+type Appointment = {
+  _id: string
+  patientId: string | { _id: string; name: string }
+  doctorId: string | { _id: string; name: string }
+  date: string
+  time?: string
+  status: string
+  [key: string]: any
+}
+
+type Prescription = {
+  _id: string
+  doctorId: string | { _id: string; name: string }
+  diagnosis: string
+  medicines: { name: string; dosage: string; frequency: string; duration: string }[]
+  instructions?: string
+  createdAt: string
+  [key: string]: any
+}
 
 function Avatar({ name, size = 36 }: { name: string; size?: number }) {
   const colors = ['#3b82f6','#8b5cf6','#06b6d4','#10b981','#f59e0b']

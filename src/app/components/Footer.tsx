@@ -12,10 +12,10 @@ interface SocialLink {
 export default function Footer(): React.ReactElement {
 
   const socialLinks: SocialLink[] = [
-    { icon: <Facebook className="h-5 w-5" />, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: <Twitter className="h-5 w-5" />, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: <Instagram className="h-5 w-5" />, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: <Linkedin className="h-5 w-5" />, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: <Facebook className="h-5 w-5" />, href: 'https://www.facebook.com/saqib.aziz.822811/', label: 'Facebook' },
+    { icon: <Twitter className="h-5 w-5" />, href: 'https://x.com/SaqibAziz965', label: 'Twitter' },
+    { icon: <Instagram className="h-5 w-5" />, href: 'https://www.instagram.com/saqibaziz_/', label: 'Instagram' },
+    { icon: <Linkedin className="h-5 w-5" />, href: 'https://www.linkedin.com/in/saqibaziz07/', label: 'LinkedIn' },
   ];
 
   const quickLinks = [

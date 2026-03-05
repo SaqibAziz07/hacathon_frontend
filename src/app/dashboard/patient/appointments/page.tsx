@@ -3,7 +3,16 @@ import { useEffect, useState } from 'react'
 import { appointmentAPI } from '@/lib/api'
 import { format, isFuture } from 'date-fns'
 import { Calendar, Clock, MoreHorizontal, Search } from 'lucide-react'
-import type { Appointment } from '@/types'
+
+type Appointment = {
+  _id: string
+  patientId: string | { _id: string; name: string }
+  doctorId: string | { _id: string; name: string }
+  date: string
+  time?: string
+  status: string
+  [key: string]: any
+}
 
 function Avatar({ name, size = 36 }: { name: string; size?: number }) {
   const colors = ['#3b82f6','#8b5cf6','#06b6d4','#10b981','#f59e0b']

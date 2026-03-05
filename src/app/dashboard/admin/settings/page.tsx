@@ -47,7 +47,7 @@ export default function AdminSettings() {
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 720 }}>
         {/* Consultation Fees */}
         <div style={{ background: 'white', borderRadius: 16, border: '1.5px solid #f1f5f9', padding: '20px 24px' }}>
-          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '.05em', fontSize: 11, color: '#94a3b8' }}>Consultation Fees</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#0f172a', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '.05em'}}>Consultation Fees</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
             <div>
               <label style={labelSt}>General Consultation ($)</label>

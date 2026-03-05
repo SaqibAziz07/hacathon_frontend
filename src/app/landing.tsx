@@ -21,7 +21,7 @@ const STATS = [
 ];
 
 const TESTIMONIALS = [
-  { name: "Dr. Sarah", role: "Chief of Medicine, DOW", initials: "SR", color: "#10b981", text: "Medoria transformed how we manage 300+ daily patients. AI insights alone save us hours every week." },
+  { name: "Dr. Sarah", role: "Senior Child Specialist, DOW", initials: "SR", color: "#10b981", text: "AI Clinic transformed how we manage 300+ daily patients. AI insights alone save us hours every week." },
   { name: "Dr. Tahseen Pasha", role: "Clinic Owner, Pasha Clinic", initials: "TP", color: "#6366f1", text: "Billing collections are up 34% and invoices go out automatically. Incredible ROI." },
   { name: "Dr. Saqib", role: "Psychologist Specialist", initials: "SA", color: "#f59e0b", text: "No-shows dropped 60% after automated reminders. The scheduling is pure magic." },
 ];
@@ -220,7 +220,7 @@ export default function LandingPage() {
               <div className="dc-appts-title">Next Appointments</div>
               {[
                 { name: "Hamid Raza", time: "10:00 AM", doc: "Dr. Sarah", status: "Pending", sc: "#f59e0b" },
-                { name: "Salman Khan", time: "11:00 AM", doc: "Dr. Budok", status: "Confirmed", sc: "#10b981" },
+                { name: "Salman Khan", time: "11:00 AM", doc: "Dr. Ahmed", status: "Confirmed", sc: "#10b981" },
               ].map(a => (
                 <div key={a.name} className="appt-row">
                   <div className="appt-info">

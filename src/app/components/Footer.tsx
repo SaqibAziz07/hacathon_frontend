@@ -166,8 +166,6 @@ export default function Footer(): React.ReactElement {
               <select className="bg-white/5 border border-gray-700 rounded-lg px-2 py-1 text-sm text-gray-300 focus:outline-none focus:border-blue-500">
                 <option value="en">English</option>
                 <option value="ur">Urdu</option>
-                <option value="ar">Arabic</option>
-                <option value="fr">Français</option>
               </select>
             </div>
           </div>

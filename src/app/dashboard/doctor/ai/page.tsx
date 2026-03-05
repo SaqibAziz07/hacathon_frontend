@@ -49,11 +49,11 @@ export default function AISymptomChecker() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-4 sm:py-6 md:py-8 px-3 sm:px-4 md:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 to-gray-100 py-4 sm:py-6 md:py-8 px-3 sm:px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 md:space-y-8">
         
         {/* Premium Header - Fully Responsive */}
-        <div className="relative rounded-xl sm:rounded-2xl bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-900 p-4 sm:p-6 md:p-8 overflow-hidden shadow-lg border border-indigo-500/30">
+        <div className="relative rounded-xl sm:rounded-2xl bg-linear-to-r from-blue-900 via-indigo-800 to-purple-900 p-4 sm:p-6 md:p-8 overflow-hidden shadow-lg border border-indigo-500/30">
           <div className="absolute top-0 right-0 -mt-10 -mr-10 h-20 w-20 sm:h-40 sm:w-40 rounded-full bg-blue-500 blur-3xl opacity-20 animate-pulse"></div>
           <div className="absolute bottom-0 left-0 -mb-10 -ml-10 h-20 w-20 sm:h-40 sm:w-40 rounded-full bg-purple-500 blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
           
@@ -82,7 +82,7 @@ export default function AISymptomChecker() {
           
           {/* Input Form - Left Column */}
           <div className="lg:col-span-5 bg-white/80 backdrop-blur-xl shadow-xl rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-gray-200/50 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 to-indigo-500"></div>
             
             <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
               <HeartPulse className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-indigo-500" />
@@ -93,7 +93,7 @@ export default function AISymptomChecker() {
               
               {error && (
                 <div className="bg-red-50 p-2 sm:p-3 rounded-md border border-red-200 text-xs sm:text-sm text-red-700 flex items-start gap-2">
-                  <AlertTriangle className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
+                  <AlertTriangle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
                   <span>{error}</span>
                 </div>
               )}
@@ -167,7 +167,7 @@ export default function AISymptomChecker() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center items-center py-2 sm:py-2.5 px-3 sm:px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full flex justify-center items-center py-2 sm:py-2.5 px-3 sm:px-4 border border-transparent rounded-lg text-sm font-medium text-white bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 {loading ? (
                   <>
@@ -217,7 +217,7 @@ export default function AISymptomChecker() {
                 
                 {result.isFallback && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 flex items-start gap-2 sm:gap-3">
-                    <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+                    <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 shrink-0 mt-0.5" />
                     <div>
                       <p className="text-xs sm:text-sm font-medium text-yellow-800">Fallback Mode Active</p>
                       <p className="text-xs sm:text-sm text-yellow-700 mt-0.5">
@@ -247,7 +247,7 @@ export default function AISymptomChecker() {
                   <div className="bg-blue-50/50 rounded-lg p-3 sm:p-4 space-y-2">
                     {(result.data.possibleConditions || result.data.conditions || []).map((condition: any, i: number) => (
                       <div key={i} className="flex items-start gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
                         <span className="text-xs sm:text-sm text-gray-900">
                           {typeof condition === 'object' ? `${condition.name} (${condition.match}%)` : condition}
                         </span>

@@ -101,7 +101,7 @@ export default function PatientAppointments() {
             ))}
           </div>
           {/* Search */}
-          <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 min-w-[200px]">
+          <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 min-w-500">
             <Search size={14} className="text-gray-400" />
             <input type="text" placeholder="Search doctor, status..."
               value={search} onChange={e => setSearch(e.target.value)}
